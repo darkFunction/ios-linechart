@@ -9,9 +9,7 @@
 #import "LCInfoView.h"
 #import "UIKit+DrawingHelpers.h"
 
-
 @interface LCInfoView ()
-
 - (void)recalculateFrame;
 
 @end
@@ -21,13 +19,14 @@
 
 - (id)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {		
-        UIFont *fatFont = [UIFont boldSystemFontOfSize:12];
-        
-        self.infoLabel = [[UILabel alloc] init]; self.infoLabel.font = fatFont;
-        self.infoLabel.backgroundColor = [UIColor clearColor]; self.infoLabel.textColor = [UIColor whiteColor];
+        UIFont *fatFont = [UIFont fontWithName:@"TrebuchetMS-Bold" size:13.f];
+        self.color = [UIColor darkGrayColor];
+        self.infoLabel = [[UILabel alloc] init];
+        self.infoLabel.font = fatFont;
+        self.infoLabel.backgroundColor = [UIColor clearColor];
+        self.infoLabel.textColor = [UIColor whiteColor];
         self.infoLabel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
-        self.infoLabel.shadowColor = [UIColor blackColor];
-        self.infoLabel.shadowOffset = CGSizeMake(0, -1);
+        self.infoLabel.shadowColor = [UIColor clearColor];
         self.infoLabel.textAlignment = NSTextAlignmentCenter;
         [self addSubview:self.infoLabel];
         
@@ -72,7 +71,7 @@ void CGContextAddRoundedRectWithHookSimple(CGContextRef c, CGRect rect, CGFloat 
     [self recalculateFrame];
     
     [self.infoLabel sizeToFit];
-    self.infoLabel.frame = CGRectMake(self.bounds.origin.x + 7, self.bounds.origin.y + 2, self.infoLabel.frame.size.width, self.infoLabel.frame.size.height);
+    self.infoLabel.frame = CGRectMake(self.bounds.origin.x + 7, self.bounds.origin.y + 3, self.infoLabel.frame.size.width, self.infoLabel.frame.size.height);
 }
 
 - (CGSize)sizeThatFits:(CGSize)size {
@@ -81,11 +80,8 @@ void CGContextAddRoundedRectWithHookSimple(CGContextRef c, CGRect rect, CGFloat 
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     CGSize s = [self.infoLabel.text sizeWithFont:self.infoLabel.font];
 #pragma clang diagnostic pop
-    s.height += 15;
-    s.height += SHADOWSIZE;
-    
-    s.width += 2 * SHADOWSIZE + 7;
-    s.width = MAX(s.width, HOOK_SIZE * 2 + 2 * SHADOWSIZE + 10);
+    s.height += 20;
+    s.width += 14;
     
     return s;
 }
@@ -95,29 +91,17 @@ void CGContextAddRoundedRectWithHookSimple(CGContextRef c, CGRect rect, CGFloat 
 
 	CGRect theRect = self.bounds;
 	//passe x oder y Position sowie Hoehe oder Breite an, je nachdem, wo der Hook sitzt.
-	theRect.size.height -= SHADOWSIZE * 2;
-	theRect.origin.x += SHADOWSIZE;
-	theRect.size.width -= SHADOWSIZE * 2;
-    theRect.size.height -= SHADOWSIZE * 2;
+	theRect.size.height -= 13;
+	theRect.origin.x += 2;
+	theRect.size.width -= 4;
 	
-    [[UIColor colorWithWhite:0.0 alpha:1.0] set];
-	CGContextSetAlpha(c, 0.7);
+    [self.color set];
 
 	CGContextSaveGState(c);
 	
-    CGContextSetShadow(c, CGSizeMake(0.0, SHADOWSIZE), SHADOWBLUR);
-	
 	CGContextBeginPath(c);
-    CGContextAddRoundedRectWithHookSimple(c, theRect, 7);
+    CGContextAddRoundedRectWithHookSimple(c, theRect, 3);
 	CGContextFillPath(c);
-	
-    [[UIColor whiteColor] set];
-	theRect.origin.x += 1;
-	theRect.origin.y += 1;
-	theRect.size.width -= 2;
-	theRect.size.height = theRect.size.height / 2 + 1;
-	CGContextSetAlpha(c, 0.2);
-    CGContextFillRoundedRect(c, theRect, 6);
 }
 
 

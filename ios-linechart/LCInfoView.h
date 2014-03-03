@@ -11,5 +11,6 @@
 @property CGPoint tapPoint;
 
 @property (strong) UILabel *infoLabel;
+@property (nonatomic) UIColor* color;
 
 @end

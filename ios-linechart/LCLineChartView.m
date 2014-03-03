@@ -297,10 +297,10 @@
                         [data.color getWhite:&b alpha:&a];
                     else
                         [data.color getHue:&h saturation:&s brightness:&b alpha:&a];
-                    if(b <= 0.5)
+                    //if(b <= 0.5)
                         [[UIColor whiteColor] setFill];
-                    else
-                        [[UIColor blackColor] setFill];
+//                    else
+//                        [[UIColor blackColor] setFill];
                 }
                 CGContextFillEllipseInRect(c, CGRectMake(xVal - 2, yVal - 2, 4, 4));
             } // for
@@ -342,6 +342,7 @@
                 minDist = dist;
                 minDistY = distY;
                 closest = datItem;
+                self.infoView.color = data.color;
                 closestPos = CGPointMake(xStart + xVal - 3, yStart + yVal - 7);
             }
         }
