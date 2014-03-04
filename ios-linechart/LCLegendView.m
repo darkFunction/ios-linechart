@@ -18,8 +18,8 @@
 
 - (void)drawRect:(CGRect)rect {
     CGContextRef c = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(c, [[UIColor colorWithWhite:0.0 alpha:0.1] CGColor]);
-    CGContextFillRoundedRect(c, self.bounds, 7);
+    CGContextSetFillColorWithColor(c, [[UIColor colorWithWhite:0.0 alpha:0.5] CGColor]);
+    CGContextFillRoundedRect(c, self.bounds, 4);
     
     
     CGFloat y = 0;
@@ -27,14 +27,12 @@
         UIColor *color = [self.colors objectForKey:title];
         if(color) {
             [color setFill];
-            CGContextFillEllipseInRect(c, CGRectMake(PADDING + 2, PADDING + round(y) + self.titlesFont.xHeight / 2 + 1, 6, 6));
+            CGContextFillEllipseInRect(c, CGRectMake(PADDING + 2, PADDING + round(y) + self.titlesFont.xHeight / 2 , 8, 8));
         }
-        [[UIColor whiteColor] set];
         // TODO: replace with new text APIs in iOS 7 only version
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        [title drawAtPoint:CGPointMake(COLORPADDING + PADDING, y + PADDING + 1) withFont:self.titlesFont];
-        [[UIColor blackColor] set];
+        [[UIColor whiteColor] set];
         [title drawAtPoint:CGPointMake(COLORPADDING + PADDING, y + PADDING) withFont:self.titlesFont];
 #pragma clang diagnostic pop
         y += [self.titlesFont lineHeight];
@@ -43,7 +41,7 @@
 
 - (UIFont *)titlesFont {
     if(_titlesFont == nil)
-        _titlesFont = [UIFont boldSystemFontOfSize:10];
+        _titlesFont = [UIFont fontWithName:@"TrebuchetMS-Bold" size:11];
     return _titlesFont;
 }
 

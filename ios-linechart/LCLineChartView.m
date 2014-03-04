@@ -97,6 +97,8 @@
     
     self.drawsDataPoints = YES;
     self.drawsDataLines  = YES;
+    
+    [self showLegend:NO animated:NO];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
@@ -288,27 +290,18 @@
                 CGFloat xVal = xStart + round((xRangeLen == 0 ? 0.5 : ((datItem.x - data.xMin) / xRangeLen)) * availableWidth);
                 CGFloat yVal = yStart + round((1.0 - (datItem.y - self.yMin) / yRangeLen) * availableHeight);
                 [self.backgroundColor setFill];
-                CGContextFillEllipseInRect(c, CGRectMake(xVal - 5.5, yVal - 5.5, 11, 11));
                 [data.color setFill];
                 CGContextFillEllipseInRect(c, CGRectMake(xVal - 4, yVal - 4, 8, 8));
-                {
-                    CGFloat h,s,b,a;
-                    if(CGColorGetNumberOfComponents([data.color CGColor]) < 3)
-                        [data.color getWhite:&b alpha:&a];
-                    else
-                        [data.color getHue:&h saturation:&s brightness:&b alpha:&a];
-                    //if(b <= 0.5)
-                        [[UIColor whiteColor] setFill];
-//                    else
-//                        [[UIColor blackColor] setFill];
-                }
+                [[UIColor whiteColor] setFill];
                 CGContextFillEllipseInRect(c, CGRectMake(xVal - 2, yVal - 2, 4, 4));
-            } // for
+            }
         } // draw data points
     }
 }
 
 - (void)showIndicatorForTouch:(UITouch *)touch {
+    [self showLegend:YES animated:YES];
+    
     if(! self.infoView) {
         self.infoView = [[LCInfoView alloc] init];
         [self addSubview:self.infoView];
@@ -380,6 +373,8 @@
 }
 
 - (void)hideIndicator {
+    [self showLegend:NO animated:YES];
+    
     [UIView animateWithDuration:0.1 animations:^{
         self.infoView.alpha = 0.0;
         self.currentPosView.alpha = 0.0;
@@ -412,12 +407,16 @@
 
 // TODO: This should really be a cached value. Invalidated iff ySteps changes.
 - (CGFloat)yAxisLabelsWidth {
+    if (!self.ySteps) {
+        return 0;
+    }
+    
     float maxV = 0;
     for(NSString *label in self.ySteps) {
         CGSize labelSize = [label sizeWithFont:self.scaleFont];
         if(labelSize.width > maxV) maxV = labelSize.width;
     }
-    return maxV + PADDING;
+    return maxV;
 }
 
 @end
