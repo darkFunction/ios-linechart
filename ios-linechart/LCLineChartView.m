@@ -59,8 +59,8 @@
 @end
 
 
-#define X_AXIS_SPACE 15
 #define PADDING 10
+#define LEFT_PADDING 10
 
 
 @implementation LCLineChartView
@@ -144,12 +144,12 @@
     
     r = self.currentPosView.frame;
     CGFloat h = self.frame.size.height;
-    r.size.height = h - 2 * PADDING - X_AXIS_SPACE;
+    r.size.height = h - 2 * PADDING - [self xAxisSpace];
     self.currentPosView.frame = r;
     
     [self.xAxisLabel sizeToFit];
     r = self.xAxisLabel.frame;
-    r.origin.y = self.frame.size.height - X_AXIS_SPACE - PADDING + 2;
+    r.origin.y = self.frame.size.height - [self xAxisSpace];
     self.xAxisLabel.frame = r;
     
     [self bringSubviewToFront:self.legendView];
@@ -179,7 +179,7 @@
     
     CGContextRef c = UIGraphicsGetCurrentContext();
     
-    CGFloat availableHeight = self.bounds.size.height - 2 * PADDING - X_AXIS_SPACE;
+    CGFloat availableHeight = self.bounds.size.height - 2 * PADDING - [self xAxisSpace];
     
     CGFloat availableWidth = self.bounds.size.width - 2 * PADDING - self.yAxisLabelsWidth;
     CGFloat xStart = PADDING + self.yAxisLabelsWidth;
@@ -201,7 +201,7 @@
         // TODO: replace with new text APIs in iOS 7 only version
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        [step drawInRect:CGRectMake(yStart, y - h / 2, self.yAxisLabelsWidth - 6, h) withFont:self.scaleFont lineBreakMode:NSLineBreakByClipping alignment:NSTextAlignmentRight];
+        [step drawInRect:CGRectMake(PADDING/2, y - h / 2, self.yAxisLabelsWidth, h) withFont:self.scaleFont lineBreakMode:NSLineBreakByClipping alignment:NSTextAlignmentRight];
 #pragma clagn diagnostic pop
         
         [[UIColor colorWithWhite:0.9 alpha:1.0] set];
@@ -315,7 +315,7 @@
     CGFloat xPos = pos.x - xStart;
     CGFloat yPos = pos.y - yStart;
     CGFloat availableWidth = self.bounds.size.width - 2 * PADDING - self.yAxisLabelsWidth;
-    CGFloat availableHeight = self.bounds.size.height - 2 * PADDING - X_AXIS_SPACE;
+    CGFloat availableHeight = self.bounds.size.height - 2 * PADDING - [self xAxisSpace];
     
     LCLineChartDataItem *closest = nil;
     float minDist = FLT_MAX;
@@ -417,6 +417,10 @@
         if(labelSize.width > maxV) maxV = labelSize.width;
     }
     return maxV;
+}
+
+- (CGFloat)xAxisSpace {
+    return self.userInteractionEnabled ? 15 : 0;
 }
 
 @end
