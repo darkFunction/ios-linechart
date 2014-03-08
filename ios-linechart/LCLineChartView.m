@@ -153,6 +153,7 @@
     self.xAxisLabel.frame = r;
     
     [self bringSubviewToFront:self.legendView];
+    [self bringSubviewToFront:self.infoView];
 }
 
 - (void)setData:(NSArray *)data {
