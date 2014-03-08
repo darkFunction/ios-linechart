@@ -367,6 +367,8 @@
             [self.xAxisLabel sizeToFit];
             r = self.xAxisLabel.frame;
             r.origin.x = round(closestPos.x - r.size.width / 2);
+            r.origin.x = MIN(self.frame.size.width - r.size.width - PADDING, r.origin.x);
+            r.origin.x = MAX(PADDING, r.origin.x);
             self.xAxisLabel.frame = r;
         }
     }];
